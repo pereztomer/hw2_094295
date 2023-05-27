@@ -36,7 +36,7 @@ BATCH_SIZE = 16
 NUM_EPOCHS = 15
 LR = 0.001
 
-base_dir = os.path.join("..", "aug_1_ds")
+base_dir = os.path.join("..", "code\\aug_2_ds")
 train_dir = os.path.join(base_dir, "train")
 val_dir = os.path.join(base_dir, "val")
 

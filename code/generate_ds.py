@@ -70,7 +70,7 @@ def generate_ds(ds_path):
 
 
 def aug_ds(original_ds_path, new_ds_path):
-    images_paths = glob(f'{original_ds_path}/**/**/**.png')
+    images_paths = glob(f'../{original_ds_path}/**/**/**.png')
     for im_path in images_paths:
         im_name = im_path.split('/')[-1].replace('.png', '')
         im_class = im_path.split('/')[-2]
@@ -87,10 +87,30 @@ def aug_ds(original_ds_path, new_ds_path):
             image = Image.fromarray(im)
             image.save(f'{new_ds_path}/{im_set_type}/{im_class}/{im_name}.png')
 
+def aug_ds_win(original_ds_path, new_ds_path):
+    images_paths = glob(f'../{original_ds_path}/**/**/**.png')
+    images_paths = [src.replace("/", "\\") for src in images_paths]
+    for im_path in images_paths:
+        im_name = im_path.split('\\')[-1].replace('.png', '')
+        im_class = im_path.split('\\')[-2]
+        im_set_type = im_path.split('\\')[-3]
+        im = cv2.imread(im_path)
+        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+        if im_set_type == 'train':
+            for i in range(5):
+                aug_im = augment_img(im)
+                os.makedirs(f'{new_ds_path}/{im_set_type}/{im_class}', exist_ok=True)
+                aug_im.save(f'{new_ds_path}/{im_set_type}/{im_class}/{im_name}_aug_{i}.png')
+        else:
+            os.makedirs(f'{new_ds_path}/{im_set_type}/{im_class}', exist_ok=True)
+            image = Image.fromarray(im)
+            image.save(f'{new_ds_path}/{im_set_type}/{im_class}/{im_name}.png')
+
+
 
 def main():
-    aug_ds(original_ds_path='/home/user/PycharmProjects/hw2_094295/random_split_data',
-           new_ds_path='/home/user/PycharmProjects/hw2_094295/aug_1_ds')
+    aug_ds_win(original_ds_path='random_split_data_filtered',
+           new_ds_path='aug_1_ds')
     # im_path = '/home/user/PycharmProjects/hw2_094295/random_split_data/train/i/ab9fb784-ce5d-11eb-b317-38f9d35ea60f.png'
     # im = Image.open(im_path)
     # im.show()

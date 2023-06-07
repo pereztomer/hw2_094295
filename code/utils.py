@@ -1,7 +1,9 @@
+import glob
 import os
 import cv2
 import uuid
-
+import json
+import random
 
 def rename_images_to_uuids(root_dir):
     for root, dirs, files in os.walk(root_dir):
@@ -15,6 +17,16 @@ def rename_images_to_uuids(root_dir):
                 print(f"Renamed {filename} to {new_filename}")
 
     print("Image renaming completed.")
+
+
+def delete_random_split(root_dir):
+    images_paths = glob.glob(root_dir)
+    sampled_list = random.sample(images_paths, 260)
+    for item in sampled_list:
+        os.remove(item)
+
+
+
 
 
 def convert_images_to_grayscale(root_dir):
@@ -40,6 +52,15 @@ def convert_images_to_grayscale(root_dir):
 
     print("Conversion to grayscale completed.")
 
+
+def num_list(src):
+    srcs = glob.glob(src+'\\*')
+    nums = [src.split('_')[-1][:-4] for src in srcs]
+    with open("test_file.json", 'w') as json_file:
+        json.dump(nums, json_file)
+
 if __name__ == '__main__':
-    rename_images_to_uuids('C:\\Users\\RoiPapo\\PycharmProjects\\hw2_094295\\code\\aug_3_ds\\train')
+    # num_list("D:\\blue_gloves\\test_images")
+    delete_random_split("C:\\Users\\RoiPapo\\PycharmProjects\\hw2_094295\\code\\aug_5_ds\\train\\**\\**.png")
+    # rename_images_to_uuids('C:\\Users\\RoiPapo\\PycharmProjects\\hw2_094295\\code\\aug_3_ds\\train')
 
